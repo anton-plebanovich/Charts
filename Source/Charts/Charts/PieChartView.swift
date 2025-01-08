@@ -485,7 +485,7 @@ open class PieChartView: PieRadarChartViewBase
     
     internal override var requiredLegendOffset: CGFloat
     {
-        return legend.font.pointSize * 2.0
+        return 0.0
     }
     
     internal override var requiredBaseOffset: CGFloat
