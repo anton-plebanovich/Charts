@@ -184,28 +184,23 @@ extension CGContext
         if angleRadians != 0.0
         {
             let size = text.size(withAttributes: attributes)
-
-            // Move the text drawing rect in a way that it always rotates around its center
-            drawOffset.x = -size.width * 0.5
-            drawOffset.y = -size.height * 0.5
-
+            
+            drawOffset.x = -size.width * anchor.x
+            drawOffset.y = -size.height * anchor.y
+            
             var translate = point
-
-            // Move the "outer" rect relative to the anchor, assuming its centered
-            if anchor.x != 0.5 || anchor.y != 0.5
-            {
-                let rotatedSize = size.rotatedBy(radians: angleRadians)
-
-                translate.x -= rotatedSize.width * (anchor.x - 0.5)
-                translate.y -= rotatedSize.height * (anchor.y - 0.5)
-            }
-
+            translate.x += size.width * anchor.x
+            translate.y += size.height * anchor.y
+            
             saveGState()
             translateBy(x: translate.x, y: translate.y)
             rotate(by: angleRadians)
-
+            
+            let heightToWidthDiff = size.height - size.width
+            drawOffset.x -= heightToWidthDiff / 2 // Assuming draw above bars, improve later if needed
+            
             (text as NSString).draw(at: drawOffset, withAttributes: attributes)
-
+            
             restoreGState()
         }
         else
