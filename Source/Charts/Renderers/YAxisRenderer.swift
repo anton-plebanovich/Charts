@@ -418,11 +418,11 @@ open class YAxisRenderer: NSObject, AxisRenderer
                 first -= interval
             }
 
-            let last = interval == 0.0 ? 0.0 : (floor(yMax / interval) * interval).nextUp
+            let last = interval == 0.0 ? 0.0 : (floor(yMax / interval) * interval)
 
             if interval != 0.0, last != first
             {
-                stride(from: first, through: last, by: interval).forEach { _ in n += 1 }
+                n += Int(((last - first) / interval).rounded()) + 1
             }
 
             // Ensure stops contains at least n elements.
@@ -430,7 +430,12 @@ open class YAxisRenderer: NSObject, AxisRenderer
             axis.entries.reserveCapacity(labelCount)
 
             // Fix for IEEE negative zero case (Where value == -0.0, and 0.0 == -0.0)
-            let values = stride(from: first, to: Double(n) * interval + first, by: interval).map { $0 == 0.0 ? 0.0 : $0 }
+            let values: [Double] = stride(from: 0, to: n, by: 1).map { number -> Double in
+                var value = first + Double(number) * interval
+                if value == 0.0 { value = 0.0 }
+                return value
+            }
+
             axis.entries.append(contentsOf: values)
         }
 
