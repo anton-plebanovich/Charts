@@ -44,6 +44,9 @@ open class BarChartRenderer: BarLineScatterCandleBubbleRenderer
     
     @objc open weak var dataProvider: BarChartDataProvider?
     
+    open var roundTopCorners: Bool = true
+    open var cornerRadius: CGFloat = 4
+    
     @objc public init(dataProvider: BarChartDataProvider, animator: Animator, viewPortHandler: ViewPortHandler)
     {
         super.init(animator: animator, viewPortHandler: viewPortHandler)
@@ -379,13 +382,29 @@ open class BarChartRenderer: BarLineScatterCandleBubbleRenderer
                 context.setFillColor(dataSet.color(atIndex: j).cgColor)
             }
             
-            context.fill(barRect)
-            
-            if drawBorder
-            {
-                context.setStrokeColor(borderColor.cgColor)
-                context.setLineWidth(borderWidth)
-                context.stroke(barRect)
+            if roundTopCorners {
+                let path = UIBezierPath(
+                    roundedRect: barRect,
+                    byRoundingCorners: [.topLeft, .topRight],
+                    cornerRadii: CGSize(width: cornerRadius, height: cornerRadius)
+                )
+                
+                context.addPath(path.cgPath)
+                context.fillPath()
+                if drawBorder {
+                    context.setStrokeColor(borderColor.cgColor)
+                    context.setLineWidth(borderWidth)
+                    context.strokePath()
+                }
+                
+            } else {
+                context.fill(barRect)
+                
+                if drawBorder {
+                    context.setStrokeColor(borderColor.cgColor)
+                    context.setLineWidth(borderWidth)
+                    context.stroke(barRect)
+                }
             }
 
             // Create and append the corresponding accessibility element to accessibilityOrderedElements

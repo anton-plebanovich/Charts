@@ -27,6 +27,7 @@ open class HorizontalBarChartRenderer: BarChartRenderer
     public override init(dataProvider: BarChartDataProvider, animator: Animator, viewPortHandler: ViewPortHandler)
     {
         super.init(dataProvider: dataProvider, animator: animator, viewPortHandler: viewPortHandler)
+        roundTopCorners = false
     }
     
     // [CGRect] per dataset
