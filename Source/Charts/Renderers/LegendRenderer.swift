@@ -518,6 +518,19 @@ open class LegendRenderer: NSObject, Renderer
             context.setFillColor(formColor.cgColor)
             context.fill(CGRect(x: x, y: y - formSize / 2.0, width: formSize, height: formSize))
             
+        case .squareRounded:
+            
+            let rect = CGRect(x: x, y: y - formSize / 2.0, width: formSize, height: formSize)
+            let path = UIBezierPath(
+                roundedRect: rect,
+                byRoundingCorners: .allCorners,
+                cornerRadii: CGSize(width: 2, height: 2)
+            )
+            
+            context.addPath(path.cgPath)
+            context.setFillColor(formColor.cgColor)
+            context.fillPath()
+            
         case .line:
             
             let formLineWidth = entry.formLineWidth.isNaN ? legend.formLineWidth : entry.formLineWidth

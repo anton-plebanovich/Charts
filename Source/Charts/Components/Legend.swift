@@ -38,6 +38,9 @@ open class Legend: ComponentBase
         /// Draw a square
         case square
         
+        /// Draw a square with rounded corners
+        case squareRounded
+        
         /// Draw a circle
         case circle
         
@@ -109,7 +112,7 @@ open class Legend: ComponentBase
     @objc open var textColor = NSUIColor.labelOrBlack
 
     /// The form/shape of the legend forms
-    @objc open var form = Form.square
+    @objc open var form = Form.squareRounded
     
     /// The size of the legend forms
     @objc open var formSize = CGFloat(8.0)
